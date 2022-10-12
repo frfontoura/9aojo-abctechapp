@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class LoginPage extends StatelessWidget {
+class SignUpPage extends StatelessWidget {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  LoginPage({super.key});
+  SignUpPage({super.key});
 
   _validateUsernameInput(String? value) {
     if (value == null || value.isEmpty) {
@@ -16,18 +16,16 @@ class LoginPage extends StatelessWidget {
   _formSubmit(BuildContext context) {
     if (_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('L')),
+        const SnackBar(content: Text('Cadastrado com sucesso, realize o login para começar.')),
       );
+      Get.back();
     }
-  }
-
-  _openSignUpPage() {
-    Get.toNamed('/signup');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: const Text('Cadastro')),
       body: Container(
         constraints: const BoxConstraints.expand(),
         color: Colors.black87,
@@ -39,7 +37,7 @@ class LoginPage extends StatelessWidget {
               children: const [
                 Expanded(
                   child: Icon(
-                    Icons.engineering,
+                    Icons.account_box,
                     color: Colors.orange,
                     size: 240,
                   ),
@@ -61,6 +59,10 @@ class LoginPage extends StatelessWidget {
                             validator: (value) => _validateUsernameInput(value),
                           ),
                           TextFormField(
+                            decoration: const InputDecoration(label: Text('E-mail')),
+                            validator: (value) => _validateUsernameInput(value),
+                          ),
+                          TextFormField(
                             obscureText: true,
                             decoration: const InputDecoration(label: Text('Senha')),
                             validator: (value) => _validateUsernameInput(value),
@@ -69,12 +71,8 @@ class LoginPage extends StatelessWidget {
                             padding: const EdgeInsets.symmetric(vertical: 16.0),
                             child: ElevatedButton(
                               onPressed: () => _formSubmit(context),
-                              child: const Text('Entrar'),
+                              child: const Text('Cadastrar'),
                             ),
-                          ),
-                          TextButton(
-                            onPressed: () => _openSignUpPage(),
-                            child: const Text('Cadastrar'),
                           ),
                         ],
                       ),
