@@ -1,9 +1,10 @@
-import 'package:abctechapp/src/modules/login/controller/signup_controller.dart';
+import 'package:abctechapp/src/modules/login/controller/signin_controller.dart';
+import 'package:abctechapp/src/navigation/routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class SignUpPage extends GetView<SignupController> {
-  const SignUpPage({super.key});
+class SigninPage extends GetView<SigninController> {
+  const SigninPage({super.key});
 
   Widget buildForm(BuildContext context) {
     return Form(
@@ -17,11 +18,6 @@ class SignUpPage extends GetView<SignupController> {
             validator: (value) => controller.validateUsernameInput(value),
           ),
           TextFormField(
-            controller: controller.emailController,
-            decoration: const InputDecoration(label: Text('E-mail')),
-            validator: (value) => controller.validateEmailInput(value),
-          ),
-          TextFormField(
             controller: controller.passwordController,
             obscureText: true,
             decoration: const InputDecoration(label: Text('Senha')),
@@ -31,9 +27,13 @@ class SignUpPage extends GetView<SignupController> {
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: ElevatedButton(
               onPressed: () => controller.formSubmit(context),
-              child: const Text('Cadastrar'),
+              child: const Text('Entrar'),
             ),
-          )
+          ),
+          TextButton(
+            onPressed: () => Get.offAndToNamed(Routes.signup),
+            child: const Text('Cadastrar'),
+          ),
         ],
       ),
     );
@@ -42,7 +42,6 @@ class SignUpPage extends GetView<SignupController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Cadastro')),
       body: Container(
         constraints: const BoxConstraints.expand(),
         color: Colors.black87,
@@ -54,7 +53,7 @@ class SignUpPage extends GetView<SignupController> {
               children: const [
                 Expanded(
                   child: Icon(
-                    Icons.account_box,
+                    Icons.engineering,
                     color: Colors.orange,
                     size: 240,
                   ),
@@ -66,7 +65,7 @@ class SignUpPage extends GetView<SignupController> {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 40),
-                    child: controller.obx((state) => buildForm(context)),
+                    child: buildForm(context),
                   ),
                 ),
               ],
