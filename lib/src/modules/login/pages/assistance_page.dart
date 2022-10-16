@@ -7,24 +7,57 @@ import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
 class AssistancePage extends GetView<AssistanceController> {
   const AssistancePage({super.key});
 
-  Widget _moviesGrid(BuildContext context) {
+  Widget _renderAssist(Set<AssistanceDTO> state) {
     return LazyLoadScrollView(
         onEndOfPage: (() => controller.nextPage()),
-        child: GridView.builder(
-          itemCount: controller.pageDTO.totalElements,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, mainAxisSpacing: 10, crossAxisSpacing: 10),
-          itemBuilder: ((context, index) => _buildGridTileList(context, controller.allAssists[index])),
+        child: ListView.builder(
+          itemCount: controller.allAssists.length,
+          shrinkWrap: true,
+          itemBuilder: (context, index) => _buildTileList(context, index),
         ));
   }
 
-  Widget _buildGridTileList(BuildContext context, AssistanceDTO assistanceDTO) {
-    return Text(assistanceDTO.name);
+  Widget _buildTileList(BuildContext context, int index) {
+    AssistanceDTO assistanceDTO = controller.allAssists.elementAt(index);
+
+    bool isSelected = controller.isSelected(index);
+
+    return InkWell(
+      onTap: () => controller.selectAssist(index),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(border: Border.all(color: isSelected ? Colors.orange : Colors.grey)),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                assistanceDTO.name,
+                style: TextStyle(fontSize: 18, color: isSelected ? Colors.orange : Colors.grey),
+              ),
+              const SizedBox(height: 10),
+              Text(
+                assistanceDTO.description,
+                style: TextStyle(fontSize: 14, color: isSelected ? Colors.orange : Colors.grey),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("Filmes em destaque")),
-        body: Container(color: Colors.black87, child: Obx(() => _moviesGrid(context))));
+        appBar: AppBar(title: const Text("Serviços disponíveis")),
+        body: Container(
+          color: Colors.black87,
+          constraints: const BoxConstraints.expand(),
+          child: controller.obx((state) => _renderAssist(state ?? {})),
+        ),
+        floatingActionButton: FloatingActionButton(onPressed: () => controller.finishSelectAssist(), child: const Icon(Icons.done)));
   }
 }
