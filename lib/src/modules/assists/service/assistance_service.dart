@@ -1,9 +1,9 @@
 import 'dart:developer';
 
-import 'package:abctechapp/src/modules/login/dto/assistance_dto.dart';
-import 'package:abctechapp/src/modules/login/dto/error_message_response.dart';
-import 'package:abctechapp/src/modules/login/dto/page.dart';
-import 'package:abctechapp/src/modules/login/provider/assistance_provider.dart';
+import 'package:abctechapp/src/modules/assists/dto/assistance_dto.dart';
+import 'package:abctechapp/src/modules/common/dto/error_message_response.dart';
+import 'package:abctechapp/src/modules/common/dto/page.dart';
+import 'package:abctechapp/src/modules/assists/provider/assistance_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

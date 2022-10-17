@@ -1,5 +1,5 @@
-import 'package:abctechapp/src/modules/login/controller/assistance_controller.dart';
-import 'package:abctechapp/src/modules/login/dto/assistance_dto.dart';
+import 'package:abctechapp/src/modules/assists/controller/assistance_controller.dart';
+import 'package:abctechapp/src/modules/assists/dto/assistance_dto.dart';
 import 'package:flutter/material.dart';
 import 'package:get/state_manager.dart';
 import 'package:lazy_load_scrollview/lazy_load_scrollview.dart';
@@ -28,7 +28,9 @@ class AssistancePage extends GetView<AssistanceController> {
         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
         child: Container(
           padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(border: Border.all(color: isSelected ? Colors.orange : Colors.grey)),
+          decoration: BoxDecoration(
+            border: Border.all(color: isSelected ? Colors.orange : Colors.grey),
+          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,

@@ -1,8 +1,10 @@
 import 'package:abctechapp/src/infraestructure/api.dart';
-import 'package:abctechapp/src/modules/login/provider/assistance_provider.dart';
+import 'package:abctechapp/src/modules/assists/provider/assistance_provider.dart';
 import 'package:abctechapp/src/modules/login/provider/auth_provider.dart';
-import 'package:abctechapp/src/modules/login/service/assistance_service.dart';
+import 'package:abctechapp/src/modules/assists/service/assistance_service.dart';
 import 'package:abctechapp/src/modules/login/service/auth_service.dart';
+import 'package:abctechapp/src/modules/order/provider/order_provider.dart';
+import 'package:abctechapp/src/modules/order/service/order_service.dart';
 import 'package:abctechapp/src/navigation/pages.dart';
 import 'package:abctechapp/src/navigation/routes.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +21,7 @@ void initApp() async {
 
   Get.put(Api());
   Get.put(AssistanceService(AssistanceProvider()));
+  Get.put(OrderService(OrderProvider()));
 
   final AuthService authService = Get.put(AuthService(AuthProvider()));
 

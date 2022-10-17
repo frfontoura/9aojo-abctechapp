@@ -1,0 +1,1 @@
+enum OrderLocationType { START, FINISH }

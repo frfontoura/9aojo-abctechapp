@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:abctechapp/src/infraestructure/api.dart';
 import 'package:abctechapp/src/infraestructure/cache_manager.dart';
-import 'package:abctechapp/src/modules/login/dto/error_message_response.dart';
+import 'package:abctechapp/src/modules/common/dto/error_message_response.dart';
 import 'package:abctechapp/src/modules/login/dto/jwt_response_dto.dart';
 import 'package:abctechapp/src/modules/login/dto/signin_request_dto.dart';
 import 'package:abctechapp/src/modules/login/dto/signup_request_dto.dart';

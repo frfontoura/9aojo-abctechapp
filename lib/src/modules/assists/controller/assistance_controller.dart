@@ -1,6 +1,6 @@
-import 'package:abctechapp/src/modules/login/dto/assistance_dto.dart';
-import 'package:abctechapp/src/modules/login/dto/page.dart';
-import 'package:abctechapp/src/modules/login/service/assistance_service.dart';
+import 'package:abctechapp/src/modules/assists/dto/assistance_dto.dart';
+import 'package:abctechapp/src/modules/common/dto/page.dart';
+import 'package:abctechapp/src/modules/assists/service/assistance_service.dart';
 import 'package:get/get.dart';
 
 class AssistanceController extends GetxController with StateMixin<Set<AssistanceDTO>> {

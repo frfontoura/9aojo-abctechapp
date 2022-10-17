@@ -50,7 +50,7 @@ class SigninController extends GetxController with StateMixin<String> {
           password: passwordController.text,
         );
 
-        await _authService.signin(signinRequestDTO).then((value) => {clearForm(), Get.offAndToNamed(Routes.assists)});
+        await _authService.signin(signinRequestDTO).then((value) => {clearForm(), Get.offAndToNamed(Routes.orders)});
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(e.toString())),
