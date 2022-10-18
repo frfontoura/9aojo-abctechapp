@@ -4,6 +4,7 @@ import 'package:abctechapp/src/modules/login/provider/auth_provider.dart';
 import 'package:abctechapp/src/modules/assists/service/assistance_service.dart';
 import 'package:abctechapp/src/modules/login/service/auth_service.dart';
 import 'package:abctechapp/src/modules/order/provider/order_provider.dart';
+import 'package:abctechapp/src/modules/order/service/geolocation_service.dart';
 import 'package:abctechapp/src/modules/order/service/order_service.dart';
 import 'package:abctechapp/src/navigation/pages.dart';
 import 'package:abctechapp/src/navigation/routes.dart';
@@ -22,6 +23,7 @@ void initApp() async {
   Get.put(Api());
   Get.put(AssistanceService(AssistanceProvider()));
   Get.put(OrderService(OrderProvider()));
+  Get.put(GeolocationService());
 
   final AuthService authService = Get.put(AuthService(AuthProvider()));
 

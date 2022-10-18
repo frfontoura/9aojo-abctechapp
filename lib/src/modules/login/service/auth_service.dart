@@ -10,6 +10,7 @@ import 'package:abctechapp/src/modules/login/dto/signup_response_dto.dart';
 import 'package:abctechapp/src/modules/login/provider/auth_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 class AuthService extends GetxService with CacheManager {
   final AuthProvider _authProvider;
@@ -86,8 +87,13 @@ class AuthService extends GetxService with CacheManager {
   void checkLoginStatus() {
     final token = getToken();
     if (token != null) {
-      isLogged.value = true;
-      api.setAuthorizationHeader(token);
+      if (JwtDecoder.isExpired(token)) {
+        isLogged.value = false;
+        api.setAuthorizationHeader(null);
+      } else {
+        isLogged.value = true;
+        api.setAuthorizationHeader(token);
+      }
     }
   }
 }

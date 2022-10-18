@@ -4,6 +4,7 @@ import 'package:abctechapp/src/modules/login/pages/signin_page.dart';
 import 'package:abctechapp/src/modules/login/pages/signin_page_binding.dart';
 import 'package:abctechapp/src/modules/login/pages/signup_page.dart';
 import 'package:abctechapp/src/modules/login/pages/signup_page_binding.dart';
+import 'package:abctechapp/src/modules/login/service/auth_middleware.dart';
 import 'package:abctechapp/src/modules/order/pages/order_page.dart';
 import 'package:abctechapp/src/modules/order/pages/order_page_binding.dart';
 import 'package:abctechapp/src/navigation/routes.dart';
