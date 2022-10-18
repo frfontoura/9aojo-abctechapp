@@ -1,33 +1,104 @@
+import 'package:abctechapp/src/modules/assists/dto/assistance_dto.dart';
 import 'package:abctechapp/src/modules/common/dto/page.dart';
 import 'package:abctechapp/src/modules/order/dto/order_dto.dart';
+import 'package:abctechapp/src/modules/order/dto/order_location_dto.dart';
 import 'package:abctechapp/src/modules/order/enums/order_status.dart';
 import 'package:abctechapp/src/modules/order/service/order_service.dart';
+import 'package:abctechapp/src/navigation/routes.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class OrderController extends GetxController with StateMixin<List<OrderDTO>> {
   late OrderService _orderService;
   PageDTO<OrderDTO> pageDTO = PageDTO(content: [], last: false, totalPages: 0, totalElements: 0, numberOfElements: 0, number: 0);
   List<OrderDTO> allOrders = [];
-  OrderStatus orderStatusFilter = OrderStatus.FINISHED;
-  RxBool showActiveOrders = RxBool(false);
+  OrderStatus _orderStatusFilter = OrderStatus.STARTED;
+  RxInt navigationIndex = RxInt(0);
 
   @override
   void onInit() {
     super.onInit();
     _orderService = Get.find<OrderService>();
+    _orderStatusFilter = OrderStatus.STARTED;
 
-    loadOrders(0);
+    _loadOrders(0);
+  }
+
+  void createNewOrder() async {
+    final selectedAssists = await Get.toNamed(Routes.assists);
+
+    if (selectedAssists != null) {
+      final assistsCodes = selectedAssists.map((element) => element.assistanceCode).toList();
+      final order = await _orderService.createOrder(OrderDTO(
+        assistsCodes: List<String>.from((assistsCodes as List<dynamic>)),
+        startOrderLocation: OrderLocationDTO(
+          latitude: 123,
+          longitude: 456,
+          dateTime: DateTime.now(),
+        ),
+      ));
+
+      Get.snackbar(
+        "Sucesso",
+        "Ordem de serviço #${order.orderCode!.substring(0, order.orderCode!.indexOf('-'))} criada com sucesso",
+        backgroundColor: Colors.black87,
+        colorText: Colors.orange,
+      );
+
+      onNavigationBarTapped(0);
+    }
+  }
+
+  void onNavigationBarTapped(int index) {
+    _orderStatusFilter = OrderStatus.values[index];
+    navigationIndex.value = index;
+    allOrders.clear();
+    _loadOrders(0);
   }
 
   void nextPage() {
     if (!pageDTO.last) {
-      loadOrders(pageDTO.number + 1);
+      _loadOrders(pageDTO.number + 1);
     }
   }
 
-  void loadOrders(int page) {
+  Future<void> showFinalizeDialog(BuildContext context, OrderDTO order) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Finalizar ordem'),
+          content: Text('Deseja finalizar a ordem de serviço #${order.orderCode!.substring(0, order.orderCode!.indexOf('-'))}?'),
+          contentTextStyle: const TextStyle(fontSize: 16, color: Colors.black87),
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Cancelar'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Finalizar'),
+              onPressed: () {
+                _finalizeOrder(order);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _loadOrders(int page) {
     change([], status: RxStatus.loading());
-    _orderService.getOrders(orderStatusFilter, page).then((value) {
+    _orderService.getOrders(_orderStatusFilter, page).then((value) {
       pageDTO = value;
       allOrders.addAll(value.content);
       change(allOrders, status: RxStatus.success());
@@ -36,25 +107,23 @@ class OrderController extends GetxController with StateMixin<List<OrderDTO>> {
     });
   }
 
-  void changeOrderStatusFilter() {
-    switch (orderStatusFilter) {
-      case OrderStatus.STARTED:
-        {
-          orderStatusFilter = OrderStatus.FINISHED;
-          showActiveOrders.value = false;
-        }
-        break;
+  void _finalizeOrder(OrderDTO order) async {
+    await _orderService.finilizeOrder(
+      order.orderCode!,
+      OrderLocationDTO(
+        latitude: 123,
+        longitude: 456,
+        dateTime: DateTime.now(),
+      ),
+    );
 
-      case OrderStatus.FINISHED:
-        {
-          orderStatusFilter = OrderStatus.STARTED;
-          showActiveOrders.value = false;
-        }
-        break;
-    }
+    Get.snackbar(
+      "Sucesso",
+      "Ordem de serviço #${order.orderCode!.substring(0, order.orderCode!.indexOf('-'))} finalizada com sucesso",
+      backgroundColor: Colors.black87,
+      colorText: Colors.orange,
+    );
 
-    allOrders.clear();
-
-    loadOrders(0);
+    onNavigationBarTapped(0);
   }
 }

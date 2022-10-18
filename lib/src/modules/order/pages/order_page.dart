@@ -28,7 +28,10 @@ class OrderPage extends GetView<OrderController> {
 
     Widget finishOrderLocation = order.finishOrderLocation != null
         ? buildOrderLocationInfo(OrderLocationType.FINISH, order.finishOrderLocation!)
-        : const Text('Não finalizada', style: TextStyle(fontSize: 14, color: Colors.grey));
+        : OutlinedButton(
+            onPressed: () => controller.showFinalizeDialog(context, order),
+            child: const Text('Finalizar ordem', style: TextStyle(fontSize: 14, color: Colors.orange)),
+          );
 
     return InkWell(
       // onTap: () => controller.selectAssist(index),
@@ -44,8 +47,8 @@ class OrderPage extends GetView<OrderController> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                'Ordem: ${order.orderCode.substring(0, order.orderCode.indexOf('-'))}',
-                style: const TextStyle(fontSize: 18, color: Colors.grey),
+                'Ordem: ${order.orderCode!.substring(0, order.orderCode!.indexOf('-'))}',
+                style: const TextStyle(fontSize: 18, color: Colors.orange),
               ),
               const SizedBox(height: 20),
               Text(
@@ -56,11 +59,6 @@ class OrderPage extends GetView<OrderController> {
               startOrderLocation,
               const SizedBox(height: 20),
               finishOrderLocation,
-              const SizedBox(height: 20),
-              TextButton(
-                onPressed: () => Get.offAndToNamed(Routes.signup),
-                child: const Text('Ver detalhes'),
-              ),
             ],
           ),
         ),
@@ -109,28 +107,26 @@ class OrderPage extends GetView<OrderController> {
       body: Container(
         color: Colors.black87,
         constraints: const BoxConstraints.expand(),
-        child: Column(children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
-              children: [
-                const Text('Exibir as ordens ativas?', style: TextStyle(fontSize: 14, color: Colors.grey)),
-                Obx(
-                  () => Switch(
-                    value: controller.showActiveOrders.isTrue,
-                    onChanged: (value) => controller.changeOrderStatusFilter(),
-                    activeColor: Colors.orange,
-                    activeTrackColor: Colors.orange,
-                    inactiveTrackColor: Colors.grey,
-                  ),
-                )
-              ],
-            ),
-          ),
-          controller.obx((state) => _renderOrders(state ?? [])),
-        ]),
+        child: controller.obx((state) => _renderOrders(state ?? [])),
       ),
-      floatingActionButton: FloatingActionButton(onPressed: () => {}, child: const Icon(Icons.add)),
+      bottomNavigationBar: Obx(
+        () => BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_repair_service),
+              label: 'Abertas',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.task_alt),
+              label: 'Finalizadas',
+            ),
+          ],
+          currentIndex: controller.navigationIndex.value,
+          selectedItemColor: Colors.orange,
+          onTap: controller.onNavigationBarTapped,
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(onPressed: controller.createNewOrder, child: const Icon(Icons.add)),
     );
   }
 }

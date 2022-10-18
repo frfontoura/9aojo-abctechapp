@@ -10,10 +10,10 @@ class OrderProvider {
   Future<Response> getOrders(OrderStatus orderStatus, int page) =>
       api.get('/orders', query: {'page': '$page', 'orderStatusList': orderStatus.name});
 
-  Future<Response> createOrder(OrderDTO orderDTO) => api.post('/orders', orderDTO);
+  Future<Response> createOrder(OrderDTO orderDTO) => api.post('/orders', orderDTO.toMap());
 
   Future<Response> finilizeOrder(String orderCode, OrderLocationDTO finishOrderLocation) =>
-      api.put('/orders/$orderCode/finalize', finishOrderLocation);
+      api.put('/orders/$orderCode/finalize', finishOrderLocation.toMap());
 
   Future<Response> getOrderDetail(String orderCode) => api.get('/orders/$orderCode');
 }

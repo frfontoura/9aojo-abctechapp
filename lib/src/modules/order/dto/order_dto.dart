@@ -5,13 +5,13 @@ import 'package:abctechapp/src/modules/order/dto/order_location_dto.dart';
 import 'package:flutter/foundation.dart';
 
 class OrderDTO {
-  final String orderCode;
+  final String? orderCode;
   final List<String> assistsCodes;
   final OrderLocationDTO startOrderLocation;
   final OrderLocationDTO? finishOrderLocation;
 
   OrderDTO({
-    required this.orderCode,
+    this.orderCode,
     required this.assistsCodes,
     required this.startOrderLocation,
     this.finishOrderLocation,

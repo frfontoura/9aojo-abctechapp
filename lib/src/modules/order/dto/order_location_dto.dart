@@ -2,13 +2,13 @@
 import 'dart:convert';
 
 class OrderLocationDTO {
-  final String orderLocationCode;
+  final String? orderLocationCode;
   final double latitude;
   final double longitude;
   final DateTime dateTime;
 
   OrderLocationDTO({
-    required this.orderLocationCode,
+    this.orderLocationCode,
     required this.latitude,
     required this.longitude,
     required this.dateTime,
@@ -33,7 +33,7 @@ class OrderLocationDTO {
       'orderLocationCode': orderLocationCode,
       'latitude': latitude,
       'longitude': longitude,
-      'dateTime': dateTime.millisecondsSinceEpoch,
+      'dateTime': dateTime.toIso8601String(),
     };
   }
 

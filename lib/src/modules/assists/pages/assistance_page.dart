@@ -54,12 +54,29 @@ class AssistancePage extends GetView<AssistanceController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text("Serviços disponíveis")),
+        appBar: AppBar(title: const Text("Criar nova ordem de serviço")),
         body: Container(
           color: Colors.black87,
           constraints: const BoxConstraints.expand(),
-          child: controller.obx((state) => _renderAssist(state ?? {})),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.only(left: 10, right: 10, top: 15),
+                    child: Obx(() => Text(
+                          'Serviços selecionados ${controller.selectedAssists.length} de 15',
+                          style: const TextStyle(fontSize: 16, color: Colors.orange),
+                          textAlign: TextAlign.left,
+                        )),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              Expanded(child: controller.obx((state) => _renderAssist(state ?? {}))),
+            ],
+          ),
         ),
-        floatingActionButton: FloatingActionButton(onPressed: () => controller.finishSelectAssist(), child: const Icon(Icons.done)));
+        floatingActionButton: FloatingActionButton(onPressed: () => controller.finishSelectAssist(context), child: const Icon(Icons.done)));
   }
 }
