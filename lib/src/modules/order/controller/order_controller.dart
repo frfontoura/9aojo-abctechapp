@@ -25,7 +25,7 @@ class OrderController extends GetxController with StateMixin<List<OrderDTO>> {
     _orderService = Get.find<OrderService>();
     _geolocationService = Get.find<GeolocationService>();
     _orderStatusFilter = OrderStatus.STARTED;
-
+    _geolocationService.start();
     _loadOrders(0);
   }
 
@@ -33,25 +33,35 @@ class OrderController extends GetxController with StateMixin<List<OrderDTO>> {
     final selectedAssists = await Get.toNamed(Routes.assists);
 
     if (selectedAssists != null) {
-      _geolocationService.getPosition().then((value) async {
-        var startOrderLocation = _orderLocationFromPosition(value);
+      _geolocationService.getPosition().then(
+        (value) async {
+          var startOrderLocation = _orderLocationFromPosition(value);
 
-        final assistsCodes = selectedAssists.map((element) => element.assistanceCode).toList();
+          final assistsCodes = selectedAssists.map((element) => element.assistanceCode).toList();
 
-        final order = await _orderService.createOrder(OrderDTO(
-          assistsCodes: List<String>.from((assistsCodes as List<dynamic>)),
-          startOrderLocation: startOrderLocation,
-        ));
+          final order = await _orderService.createOrder(OrderDTO(
+            assistsCodes: List<String>.from((assistsCodes as List<dynamic>)),
+            startOrderLocation: startOrderLocation,
+          ));
 
-        Get.snackbar(
-          "Sucesso",
-          "Ordem de serviço #${order.orderCode!.substring(0, order.orderCode!.indexOf('-'))} criada com sucesso",
-          backgroundColor: Colors.black87,
-          colorText: Colors.orange,
-        );
+          Get.snackbar(
+            "Sucesso",
+            "Ordem de serviço #${order.orderCode!.substring(0, order.orderCode!.indexOf('-'))} criada com sucesso",
+            backgroundColor: Colors.black87,
+            colorText: Colors.orange,
+          );
 
-        onNavigationBarTapped(0);
-      });
+          onNavigationBarTapped(0);
+        },
+        onError: (error) => {
+          Get.snackbar(
+            "Erro ao criar ordem",
+            "Para criar uma ordem é necessário permitir o acesso a localização.",
+            backgroundColor: Colors.black87,
+            colorText: Colors.deepOrange,
+          ),
+        },
+      );
     }
   }
 

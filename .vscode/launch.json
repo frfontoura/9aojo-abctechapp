@@ -7,11 +7,7 @@
     {
       "name": "abctechapp",
       "request": "launch",
-      "type": "dart",
-      "args": [
-        "-d",
-        "chrome"
-      ]
+      "type": "dart"
     },
     {
       "name": "abctechapp (profile mode)",
@@ -24,6 +20,15 @@
       "request": "launch",
       "type": "dart",
       "flutterMode": "release"
-    }
+    },
+    {
+      "name": "abctechapp (chrome)",
+      "request": "launch",
+      "type": "dart",
+      "args": [
+        "-d",
+        "chrome"
+      ]
+    },
   ]
 }

@@ -12,12 +12,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
-void main() {
-  initApp();
+void main() async {
+  await initApp();
   runApp(const MyApp());
 }
 
-void initApp() async {
+Future<void> initApp() async {
   await GetStorage.init();
 
   Get.put(Api());
@@ -28,6 +28,8 @@ void initApp() async {
   final AuthService authService = Get.put(AuthService(AuthProvider()));
 
   authService.checkLoginStatus();
+
+  return Future.sync(() => null);
 }
 
 class MyApp extends StatelessWidget {
