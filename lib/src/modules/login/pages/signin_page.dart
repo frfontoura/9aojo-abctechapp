@@ -31,7 +31,7 @@ class SigninPage extends GetView<SigninController> {
             ),
           ),
           TextButton(
-            onPressed: () => Get.offAndToNamed(Routes.signup),
+            onPressed: () => Get.toNamed(Routes.signup),
             child: const Text('Cadastrar'),
           ),
         ],
